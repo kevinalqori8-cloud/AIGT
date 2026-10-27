@@ -1,0 +1,11 @@
+{
+  "name": "growtopia-lua-api",
+  "version": "1.0.0",
+  "description": "API Bridge for GrowLauncher Lua Scripts",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\""
+  },
+  "dependencies": {}
+}
+
