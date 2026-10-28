@@ -1,5 +1,5 @@
 export default async function handler(req, res) {
-    // Header CORS
+    // Header CORS agar bisa diakses dari game / luar
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -19,7 +19,7 @@ export default async function handler(req, res) {
 
     const PAWAN_API_KEY = process.env.PAWAN_API_KEY;
     if (!PAWAN_API_KEY) {
-        return res.status(500).json({ error: 'PAWAN_API_KEY is not configured on server' });
+        return res.status(500).json({ error: 'PAWAN_API_KEY is not configured on Vercel Environment Variables' });
     }
 
     try {
