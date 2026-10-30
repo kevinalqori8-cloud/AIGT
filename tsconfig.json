@@ -9,7 +9,6 @@
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
-"allowImportingTsExtensions": "true",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
