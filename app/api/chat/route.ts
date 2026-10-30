@@ -1,4 +1,4 @@
-import { retrieveRelevant, formatContext } from '../../../lib/retrieve';
+import { retrieveRelevant, formatContext } from '../../../lib/retrieve.ts';
 import { NextResponse } from 'next/server';
 
 export const runtime = 'edge';
