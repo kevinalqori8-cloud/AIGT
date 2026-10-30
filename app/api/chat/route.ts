@@ -15,7 +15,7 @@ export async function OPTIONS() {
 async function processAI(promptText: string) {
     const PAWAN_API_KEY = process.env.PAWAN_API_KEY;
     if (!PAWAN_API_KEY) {
-        return { error: 'PAWAN_API_KEY belum disetting di Vercel' };
+        return { error: 'PAWAN_API_KEY belum disetting di Vercel Environment Variables' };
     }
 
     const pawanRes = await fetch("https://api.pawan.krd/v1/chat/completions", {
@@ -39,33 +39,49 @@ async function processAI(promptText: string) {
         const reply = data.choices[0].message.content;
         return { status: "success", response: reply, content: reply };
     }
-    return { error: "Gagal dari Pawan AI", details: data };
+    return { error: "Gagal memproses ke Pawan AI", details: data };
 }
 
-// Tangkap metode GET langsung dari Growlauncher (tanpa bridge!)
+// Handler POST (Dipakai oleh Web Chatbot UI & POST payload)
+export async function POST(req: Request) {
+    try {
+        const body = await req.json().catch(() => ({}));
+        let userMessage = "";
+
+        // 1. Cek jika dikirim dari Web Chatbot UI (Vercel AI SDK format array 'messages')
+        if (body.messages && Array.isArray(body.messages) && body.messages.length > 0) {
+            const lastMsg = body.messages[body.messages.length - 1];
+            userMessage = lastMsg.content || lastMsg.text || "";
+        } 
+        // 2. Cek jika dikirim berupa JSON string 'prompt' atau 'message'
+        else if (body.prompt) {
+            userMessage = body.prompt;
+        } else if (body.message) {
+            userMessage = body.message;
+        }
+
+        if (!userMessage || userMessage.trim() === "") {
+            return NextResponse.json({ error: 'Prompt atau message tidak boleh kosong' }, { status: 400, headers: corsHeaders });
+        }
+
+        const result = await processAI(userMessage);
+        return NextResponse.json(result, { status: result.error ? 500 : 200, headers: corsHeaders });
+
+    } catch (err: any) {
+        return NextResponse.json({ error: "Server Error: " + err.message }, { status: 500, headers: corsHeaders });
+    }
+}
+
+// Handler GET (Dipakai oleh Script Lua Growlauncher via fetch URL)
 export async function GET(req: Request) {
     try {
         const urlObj = new URL(req.url);
         const prompt = urlObj.searchParams.get('prompt');
 
         if (!prompt) {
-            return NextResponse.json({ status: "success", response: "API Online!" }, { headers: corsHeaders });
+            return NextResponse.json({ status: "success", response: "API Growspeech Online! Silakan gunakan query ?prompt=" }, { headers: corsHeaders });
         }
 
-        const result = await processAI(prompt);
-        return NextResponse.json(result, { status: result.error ? 500 : 200, headers: corsHeaders });
-    } catch (err: any) {
-        return NextResponse.json({ error: err.message }, { status: 500, headers: corsHeaders });
-    }
-}
-
-export async function POST(req: Request) {
-    try {
-        const body = await req.json().catch(() => ({}));
-        const prompt = body.prompt || body.message;
-        if (!prompt) {
-            return NextResponse.json({ error: 'Prompt kosong' }, { status: 400, headers: corsHeaders });
-        }
         const result = await processAI(prompt);
         return NextResponse.json(result, { status: result.error ? 500 : 200, headers: corsHeaders });
     } catch (err: any) {
