@@ -37,3 +37,29 @@ export function retrieveRelevant(
     topK: number = 3,
     minScore: number = 1
 ): KnowledgeEntry[] {
+    const queryTokens = tokenize(userMessage);
+    if (queryTokens.length === 0) return [];
+
+    return KNOWLEDGE_BASE
+        .map((entry) => ({ entry, s: score(queryTokens, entry) }))
+        .filter((x) => x.s >= minScore)
+        .sort((a, b) => b.s - a.s)
+        .slice(0, topK)
+        .map((x) => x.entry);
+}
+
+/**
+ * Format retrieved entries as a compact context block to inject into the
+ * system prompt. Confidence level is kept visible so the model doesn't
+ * present "inferred" facts as if they were confirmed.
+ */
+export function formatContext(entries: KnowledgeEntry[]): string {
+    if (entries.length === 0) return "";
+    const lines = entries.map(
+        (e) => `- [${e.confidence}] ${e.topic}: ${e.content}`
+    );
+    return `\n\n### Relevant knowledge (from verified KB, cite confidence level if relevant):\n${lines.join(
+        "\n"
+    )}`;
+}
+

@@ -1,3 +1,4 @@
+import { retrieveRelevant, formatContext } from '../../../lib/retrieve';
 import { NextResponse } from 'next/server';
 
 export const runtime = 'edge';
@@ -17,6 +18,9 @@ async function processAI(promptText: string) {
     if (!PAWAN_API_KEY) {
         return { error: 'PAWAN_API_KEY belum disetting di Vercel Environment Variables' };
     }
+const relevant = retrieveRelevant(promptText);
+    const kbContext = formatContext(relevant);
+
 
 const systemPrompt = `You are AIGT (AI Growtopia Toolkit & Daily Companion), created and coded by Veeynn. You are an expert Growtopia buddy, elite Lua coder, and fun multilingual daily assistant.
 

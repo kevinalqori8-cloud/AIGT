@@ -37,3 +37,30 @@ export const KNOWLEDGE_BASE: KnowledgeEntry[] = [
         content:
             "The app-state file also contains a 'Token' field and a 'rid' field, which " +
             "are session/auth-related. These must never be read aloud, logged, stored " +
+            "in plaintext in a knowledge base, or transmitted anywhere. Any tool that " +
+            "parses this file type should redact these fields before further processing.",
+    },
+    {
+        id: "appstate-schema-003",
+        topic: "Growtopia client app-state: field typing caveat",
+        tags: ["save.dat", "appstate", "file-format"],
+        confidence: "inferred",
+        content:
+            "Numeric values adjacent to string keys in the app-state file are raw " +
+            "4-byte little-endian values; exact type tagging per field (bool vs int32 " +
+            "vs float32) was inferred from plausible ranges (e.g. Console.Width as a " +
+            "pixel float) but not confirmed against official source. Treat per-field " +
+            "types as unconfirmed until cross-checked.",
+    },
+];
+
+/**
+ * Add a new entry at runtime (e.g. after verifying something new).
+ * Keep this in-memory for now; swap for a real datastore (KV, DB) once
+ * the KB needs to persist across deployments or grow beyond a few hundred
+ * entries.
+ */
+export function addKnowledge(entry: KnowledgeEntry) {
+    KNOWLEDGE_BASE.push(entry);
+}
+
