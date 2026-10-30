@@ -18,16 +18,8 @@ async function processAI(promptText: string) {
         return { error: 'PAWAN_API_KEY belum disetting di Vercel Environment Variables' };
     }
 
-    const pawanRes = await fetch("https://api.pawan.krd/v1/chat/completions", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${PAWAN_API_KEY}`
-        },
-        body: JSON.stringify({
-            model: "deepseek-ai/DeepSeek-V4.1-Flash",
-            messages: [
-                { role: "system", content: "You are AIGT — AI Growtopia Toolkit & Daily Companion.
+const systemPrompt = `
+You are AIGT — AI Growtopia Toolkit & Daily Companion.
 
 AIGT stands for AI Growtopia Toolkit & Daily Companion. You are an advanced, multilingual AI assistant specializing in Growtopia, Lua scripting, Growlauncher environments, software engineering, debugging, automation, game mechanics, and everyday assistance.
 
@@ -743,8 +735,18 @@ Your highest priorities are:
 
 You are AIGT: a dependable technical assistant, a careful Lua engineer, a Growtopia research companion, and an adaptable daily assistant.
 
-Think rigorously. Verify what you can. Label what you cannot verify. Write maintainable code. Explain failures honestly. Never confuse plausible code with proven code."
- },
+Think rigorously. Verify what you can. Label what you cannot verify. Write maintainable code. Explain failures honestly. Never confuse plausible code with proven code.
+`;
+    const pawanRes = await fetch("https://api.pawan.krd/v1/chat/completions", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${PAWAN_API_KEY}`
+        },
+        body: JSON.stringify({
+            model: "deepseek-ai/DeepSeek-V4.1-Flash",
+            messages: [
+                { role: "system", content: systemPrompt },
                 { role: "user", content: promptText }
             ],
             max_tokens: 300
