@@ -1,0 +1,37 @@
+
+{
+  "version": "1.0.0",
+  "documents": [
+    {
+      "id": "lua-basics",
+      "path": "knowledge/build-docs/lua/basics.md",
+      "category": "lua",
+      "status": "planned"
+    },
+    {
+      "id": "lua-coroutines",
+      "path": "knowledge/build-docs/lua/coroutines.md",
+      "category": "lua",
+      "status": "planned"
+    },
+    {
+      "id": "growlauncher-hooks",
+      "path": "knowledge/build-docs/growlauncher/hooks.md",
+      "category": "growlauncher",
+      "status": "planned"
+    },
+    {
+      "id": "growlauncher-functions",
+      "path": "knowledge/build-docs/growlauncher/functions.md",
+      "category": "growlauncher",
+      "status": "planned"
+    },
+    {
+      "id": "growlauncher-namespaces",
+      "path": "knowledge/build-docs/growlauncher/namespaces.md",
+      "category": "growlauncher",
+      "status": "planned"
+    }
+  ]
+}
+

@@ -1,0 +1,57 @@
+
+{
+  "schema_version": 1,
+  "project": "GrowSpeech",
+  "version": "1.0.0",
+  "skills": [
+    {
+      "id": "warp",
+      "name": "World Warp",
+      "description": "Meminta perpindahan ke world tertentu.",
+      "category": "movement",
+      "file": "skills/movement/warp.lua",
+      "version": "1.0.0",
+      "enabled": true,
+      "permission": "confirmation",
+      "parameters": {
+        "world": {
+          "type": "string",
+          "required": true,
+          "maxLength": 24
+        }
+      }
+    },
+    {
+      "id": "findpath",
+      "name": "Find Path",
+      "description": "Meminta navigasi menuju koordinat tertentu.",
+      "category": "movement",
+      "file": "skills/movement/findpath.lua",
+      "version": "1.0.0",
+      "enabled": true,
+      "permission": "confirmation",
+      "parameters": {
+        "x": {
+          "type": "number",
+          "required": true
+        },
+        "y": {
+          "type": "number",
+          "required": true
+        }
+      }
+    },
+    {
+      "id": "get_current_world",
+      "name": "Get Current World",
+      "description": "Membaca nama world saat ini.",
+      "category": "world",
+      "file": "skills/world/get-current-world.lua",
+      "version": "1.0.0",
+      "enabled": true,
+      "permission": "confirmation",
+      "parameters": {}
+    }
+  ]
+}
+
